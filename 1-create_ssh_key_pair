@@ -1,0 +1,13 @@
+#!/bin/bash
+
+ssh-keygen -b 4096 -t rsa -f school -N "betty"
+
+echo "Generating public/private rsa key pair."
+echo "Your identification has been saved in school."
+echo "Your public key has been saved in school.pub."
+echo "The key fingerprint is:"
+ssh-keygen -l -f school.pub
+echo "The key's randomart image is:"
+ssh-keygen -lv -f school.pub
+
+ls
