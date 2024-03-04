@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-# Configures a new Ubuntu server with a HAProxy load balancer
+# configures a new HAproxy as a load balancer
 
-sudo apt-get -y install software-properties-common
-sudo add-apt-repository -y ppa:vbernat/haproxy-1.8
-sudo apt-get -y update
-sudo apt-get -y install haproxy=1.8.\*
+# Install HAproxy on a server
+apt-get -y update
+apt-get -y install haproxy=1.6.\*
 
-sudo sed -i '/errorfile 504/a listen thelaura' /etc/haproxy/haproxy.cfg
-sudo sed -i '/listen thelaura/a         bind :80' /etc/haproxy/haproxy.cfg
-sudo sed -i '/bind :80/a         mode http' /etc/haproxy/haproxy.cfg
-sudo sed -i '/mode http/a         server 2154-web-01 104.196.50.234:80 check' /etc/haproxy/haproxy.cfg
-sudo sed -i '/server 2154-web-01 104.196.50.234:80 check/a         server 2154-web-02 35.237.11.53:80 check' /etc/haproxy/haproxy.cfg
+# Configure haproxy configuration file to distribute requests using a roundrobin algorithm
+echo '
+frontend sammykingx.tech
+        bind 0:80
+        default_backend web_servers
 
-sudo sed -i '/#EXTRAOPTS="-de -m 16"/a ENABLED=1' /etc/default/haproxy
+backend web_servers
+        balance roundrobin
+        server 64820-web-01 100.26.152.157:80
+        server 64820-web-02 52.86.102.6:80
+' >> /etc/haproxy/haproxy.cfg
 
-sudo service haproxy start
+# Restart HAproxy service
+service haproxy restart
