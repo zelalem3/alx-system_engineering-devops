@@ -1,4 +1,3 @@
-# 2-puppet_custom_http_response_header.pp
 class { 'nginx':
   service_ensure => 'running',
   service_enable => true,
