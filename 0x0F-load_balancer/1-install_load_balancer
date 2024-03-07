@@ -13,8 +13,8 @@ frontend zelalem.tech
 
 backend web_servers
         balance roundrobin
-        server 64820-web-01 100.25.45.216
-        server 64820-web-02 54.236.12.192
+        server 492161-web-01 100.25.45.216:80 check
+        server 492161-web-02 54.236.12.192:80 check
 ' >> /etc/haproxy/haproxy.cfg
 
 # Restart HAproxy service
