@@ -1,21 +1,59 @@
 #!/usr/bin/env bash
-# configures a new HAproxy as a load balancer
+# install load balancer
 
-# Install HAproxy on a server
-apt-get -y update
-apt-get -y install haproxy=1.6.\*
 
-# Configure haproxy configuration file to distribute requests using a roundrobin algorithm
-echo '
-frontend zelalem.tech
-        bind 0:80
-        default_backend web_servers
+echo -e "Updating and doing some minor checks...\n"
 
-backend web_servers
-        balance roundrobin
-        server 492161-web-01 100.25.45.216:80 check
-        server 492161-web-02 54.236.12.192:80 check
-' >> /etc/haproxy/haproxy.cfg
+function install() {
+	command -v "$1" &> /dev/null
 
-# Restart HAproxy service
-service haproxy restart
+	#shellcheck disable=SC2181
+	if [ $? -ne 0 ]; then
+		echo -e "	Installing: $1\n"
+		sudo apt-get update -y -qq && \
+			sudo apt-get install -y "$1" -qq
+		echo -e "\n"
+	else
+		echo -e "	${1} is already installed.\n"
+	fi
+}
+
+install haproxy #install haproxy
+
+echo -e "\nSetting up some minor stuff.\n"
+
+# backup default server config file
+sudo cp /etc/haproxy/haproxy.cfg haproxy_default.backup
+
+server_config=\
+"
+defaults
+  mode http
+  timeout client 15s
+  timeout connect 10s
+  timeout server 15s
+  timeout http-request 10s
+
+frontend zelalem-tech-frontend
+    bind *:80
+    default_backend zelalem-tech-backend
+
+backend zelalem-tech-backend
+    balance roundrobin
+    server 492161-web-01 54.90.27.178:80 check
+    server 492161-web-02 100.26.238.172:80 check
+"
+
+# shellcheck disable=SC2154
+echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+echo "configured - Roundrobin On web-01 & web-02"
+
+if [ "$(pgrep -c haproxy)" -le 0 ]; then
+	sudo service haproxy start
+else
+	sudo service haproxy restart
+fi
