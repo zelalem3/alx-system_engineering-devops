@@ -1,7 +1,7 @@
 
 Curriculum
 SE Foundations
-Average: 146.89%
+
 0x19. Postmortem
 DevOps
 SysAdmin
@@ -62,15 +62,12 @@ While postmortem format can vary, stick to this one so that you can get properly
 
 Please, remember that these blogs must be written in English to further your technical ability in a variety of settings.
 
-Add URLs here:
- 
-https://docs.google.com/document/d/17bgUwIAiJZUvKTF0C3didsdggulscXkn00ym2S03MT0/edit
-Repo:
+
 
 GitHub repository: alx-system_engineering-devops
 Directory: 0x19-postmortem
 File: README.md
-?
+
 1. Make people want to read your postmortem
 #advanced
 We are constantly stormed by a quantity of information, it’s tough to get people to read you.
@@ -79,14 +76,8 @@ Make your post-mortem attractive by adding humour, a pretty diagram or anything 
 
 Please, remember that these blogs must be written in English to further your technical ability in a variety of settings.
 
-Add URLs here:
- 
-https://docs.google.com/document/d/1NgaC27V6PvHY-Vs_1xjnX3uSDNAIRGI2zoQBbNzjYvc/edit
-Repo:
 
-GitHub repository: alx-system_engineering-devops
-Directory: 0x19-postmortem
-File: README.md
-?
+
+
 Copyright © 2024 ALX, All rights reserved.
 
